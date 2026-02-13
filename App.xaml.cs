@@ -1,4 +1,5 @@
 ﻿using MedicalCenter.Views;
+using MedicalCenter.Views.Claims;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace MedicalCenter
@@ -12,9 +13,21 @@ namespace MedicalCenter
 
         protected override Window CreateWindow(IActivationState? activationState)
         {
-            var navigationPage = new NavigationPage(new MedicalCenter.Views.LoginScreen());
+            var token = Task.Run(async () => await SecureStorage.Default.GetAsync("auth_token")).Result;
 
-            return new Window(navigationPage);
+            var shell = new AppShell();
+
+            if (!string.IsNullOrEmpty(token))
+            {
+       
+                Task.Run(async () => await shell.GoToAsync("//ClaimsPage"));
+            }
+            else
+            {
+                Task.Run(async () => await shell.GoToAsync("//Login"));
+            }
+
+            return new Window(shell); 
         }
     }
 }

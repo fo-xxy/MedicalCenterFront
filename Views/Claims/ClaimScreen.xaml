@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MedicalCenter.Views.Claims.ClaimScreen"
+             Title="ClaimScreen"
+             BackgroundColor="#F3F4F6"
+             Shell.TabBarIsVisible="True"
+             Shell.NavBarIsVisible="True">
+    <Grid RowDefinitions="Auto, *, Auto">
+
+        <Border Grid.Row="0" BackgroundColor="#111827" Padding="15,12" StrokeThickness="0">
+            <Grid ColumnDefinitions="*, 1.5*, 0.8*, 100">
+                <HorizontalStackLayout Grid.Column="0" Spacing="4" VerticalOptions="Center">
+                    <Label Text="Id" TextColor="#9CA3AF" FontSize="12" FontAttributes="Bold"/>
+                    <Label Text="⇅" TextColor="#3B82F6" FontSize="12" FontAttributes="Bold"/>
+                    <HorizontalStackLayout.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding SortCommand}" CommandParameter="Id" />
+                    </HorizontalStackLayout.GestureRecognizers>
+                </HorizontalStackLayout>
+
+                <HorizontalStackLayout Grid.Column="1" Spacing="4" VerticalOptions="Center">
+                    <Label Text="Paciente" TextColor="#9CA3AF" FontSize="12" FontAttributes="Bold"/>
+                    <Label Text="⇅" TextColor="#3B82F6" FontSize="12" FontAttributes="Bold"/>
+                    <HorizontalStackLayout.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding SortCommand}" CommandParameter="Patient" />
+                    </HorizontalStackLayout.GestureRecognizers>
+                </HorizontalStackLayout>
+
+                <HorizontalStackLayout Grid.Column="2" Spacing="4" VerticalOptions="Center" HorizontalOptions="End">
+                    <Label Text="Monto" TextColor="#9CA3AF" FontSize="12" FontAttributes="Bold"/>
+                    <Label Text="⇅" TextColor="#3B82F6" FontSize="12" FontAttributes="Bold"/>
+                    <HorizontalStackLayout.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding SortCommand}" CommandParameter="Amount" />
+                    </HorizontalStackLayout.GestureRecognizers>
+                </HorizontalStackLayout>
+
+                <Label Text="Estado" Grid.Column="3" TextColor="#9CA3AF" FontSize="12" FontAttributes="Bold" HorizontalTextAlignment="Center" VerticalOptions="Center"/>
+            </Grid>
+        </Border>
+
+        <Grid Grid.Row="1">
+            <VerticalStackLayout VerticalOptions="Center" Spacing="20" IsVisible="{Binding IsLoading}">
+                <ActivityIndicator IsRunning="True" Color="#3B82F6" HeightRequest="40" WidthRequest="40"/>
+                <Label Text="Procesando información..." HorizontalOptions="Center" TextColor="#6B7280" FontSize="13"/>
+            </VerticalStackLayout>
+
+            <RefreshView Command="{Binding LoadClaimsCommand}" IsRefreshing="{Binding IsRefreshing}" RefreshColor="#3B82F6">
+                <CollectionView x:Name="ClaimsList" ItemsSource="{Binding Claims}" Opacity="0" SelectionMode="None">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <Grid Padding="15,16" ColumnDefinitions="*, 1.5*, 0.8*, 100">
+                                <BoxView Grid.ColumnSpan="4" HeightRequest="0.5" Color="#E5E7EB" VerticalOptions="End" Margin="0,0,0,-16"/>
+                                <Label Text="{Binding ClaimNumber}" Grid.Column="0" VerticalOptions="Center" FontSize="13" TextColor="#4B5563" FontFamily="Monospace"/>
+                                <Label Text="{Binding PatientName}" Grid.Column="1" VerticalOptions="Center" FontSize="14" FontAttributes="Bold" TextColor="#111827"/>
+                                <Label Text="{Binding Amount, StringFormat='${0:N0}'}" Grid.Column="2" VerticalOptions="Center" HorizontalTextAlignment="End" FontSize="14" TextColor="#1F2937" FontAttributes="Bold"/>
+                                <Label Text="{Binding Status}" Grid.Column="3" FontSize="11" TextColor="#374151" FontAttributes="Bold" HorizontalOptions="Center" VerticalOptions="Center" TextTransform="Uppercase"/>
+                            </Grid>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </RefreshView>
+        </Grid>
+    </Grid>
+</ContentPage>

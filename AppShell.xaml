@@ -1,14 +1,45 @@
-<?xml version="1.0" encoding="UTF-8" ?>
 <Shell
     x:Class="MedicalCenter.AppShell"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="clr-namespace:MedicalCenter"
-    Title="MedicalCenter">
+    xmlns:claims="clr-namespace:MedicalCenter.Views.Claims"
+    Title="Medical Center">
+
+    <Shell.Resources>
+        <ResourceDictionary>
+            <Style TargetType="TabBar">
+                <Setter Property="Shell.TabBarBackgroundColor" Value="White" />
+                <Setter Property="Shell.TabBarTitleColor" Value="#3B82F6" />
+                <Setter Property="Shell.TabBarUnselectedColor" Value="#9CA3AF" />
+            </Style>
+        </ResourceDictionary>
+    </Shell.Resources>
 
     <ShellContent
-        Title="Home"
-        ContentTemplate="{DataTemplate local:LoginScreen}"
-        Route="MainPage" />
+        Title="Login"
+        ContentTemplate="{DataTemplate local:Views.LoginScreen}"
+        Route="Login"
+        Shell.TabBarIsVisible="False" />
+
+    <TabBar>
+        <Tab Title="Claims" Icon="list_icon.png">
+            <ShellContent 
+                ContentTemplate="{DataTemplate claims:ClaimScreen}" 
+                Route="ClaimsPage" />
+        </Tab>
+
+        <Tab Title="Importar" Icon="upload_icon.png">
+            <ShellContent 
+                ContentTemplate="{DataTemplate claims:ClaimImportScreen}" 
+                Route="ImportPage" />
+        </Tab>
+
+        <Tab Title="Importar" Icon="upload_icon.png">
+            <ShellContent 
+                ContentTemplate="{DataTemplate claims:ClaimExportScreen}" 
+                Route="ImportPage" />
+        </Tab>
+    </TabBar>
 
 </Shell>

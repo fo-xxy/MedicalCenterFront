@@ -1,6 +1,8 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using MedicalCenter.Models;
 using MedicalCenter.Services;
+using MedicalCenter.Services.Auth;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -30,7 +32,6 @@ namespace MedicalCenter.ViewModels
             [RelayCommand]
             private async Task Register()
             {
-                // 1. Validaciones básicas
                 if (string.IsNullOrWhiteSpace(Email) || string.IsNullOrWhiteSpace(Password) || string.IsNullOrWhiteSpace(Role))
                 {
                     await App.Current.MainPage.DisplayAlert("Error", "Todos los campos son obligatorios", "OK");
@@ -39,12 +40,21 @@ namespace MedicalCenter.ViewModels
 
                 IsBusy = true;
 
-                var apiService = new AuthService(); 
-                var exito = await apiService.RegisterAsync(Email, Password, Role);
+
+            var registerRequest = new RegisterRequest
+            {
+                Email = Email,
+                Password = Password,
+                Role = Role
+            };
+
+
+
+            var apiService = new AuthApiService(); 
+                var exito = await apiService.RegisterAsync(registerRequest);
 
                 IsBusy = false;
 
-                // 3. Respuesta al usuario
                 if (exito)
                 {
                     await App.Current.MainPage.DisplayAlert("¡Éxito!", "Usuario creado correctamente", "OK");

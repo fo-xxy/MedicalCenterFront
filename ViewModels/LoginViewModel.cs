@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using MedicalCenter.Models;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -31,8 +32,14 @@ namespace MedicalCenter.ViewModels
 
             IsBusy = true;
 
-            var authService = new Services.AuthService();
-            var result = await authService.LoginAsync(Email, Password);
+            var loginRequest = new LoginRequest
+            {
+                Email = Email,
+                Password = Password
+            };
+
+            var authService = new Services.Auth.AuthApiService();
+            var result = await authService.LoginAsync(loginRequest);
 
             IsBusy = false;
 
@@ -40,14 +47,8 @@ namespace MedicalCenter.ViewModels
             {
                 await SecureStorage.SetAsync("auth_token", result.Token);
 
-           
-                string nombreUsuario = result.User?.FullName ?? Email;
 
-                await App.Current.MainPage.DisplayAlert("Bienvenido", $"Hola, {nombreUsuario}", "Entrar");
-
-                //App.Current.MainPage = new NavigationPage(new Views.DashboardPage());
-
-
+                await Shell.Current.GoToAsync("//ClaimsPage");
             }
             else
             {
