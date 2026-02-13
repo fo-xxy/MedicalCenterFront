@@ -1,6 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using IntelliJ.Lang.Annotations;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -24,35 +23,44 @@ namespace MedicalCenter.ViewModels
         [RelayCommand]
         private async Task Login()
         {
-            if (IsBusy) return;
-
             if (string.IsNullOrWhiteSpace(Email) || string.IsNullOrWhiteSpace(Password))
             {
-                await Shell.Current.DisplayAlert("Atención", "Por favor, complete todos los campos.", "Entendido");
+                await App.Current.MainPage.DisplayAlert("Error", "Llene todos los campos", "OK");
                 return;
             }
 
-            try
-            {
-                IsBusy = true;
+            IsBusy = true;
 
-                await Task.Delay(1500);
+            var authService = new Services.AuthService();
+            var result = await authService.LoginAsync(Email, Password);
 
-                if (App.Current?.MainPage != null)
-                {
-                    await App.Current.MainPage.DisplayAlert(
-                        "Acceso Concedido",
-                        $"Bienvenido al sistema, {Email}",
-                        "Continuar");
-                }
-            }
-            catch (Exception ex)
+            IsBusy = false;
+
+            if (result != null && !string.IsNullOrEmpty(result.Token))
             {
-                System.Diagnostics.Debug.WriteLine($"Error en Login: {ex.Message}");
+                await SecureStorage.SetAsync("auth_token", result.Token);
+
+           
+                string nombreUsuario = result.User?.FullName ?? Email;
+
+                await App.Current.MainPage.DisplayAlert("Bienvenido", $"Hola, {nombreUsuario}", "Entrar");
+
+                //App.Current.MainPage = new NavigationPage(new Views.DashboardPage());
+
+
             }
-            finally
+            else
             {
-                IsBusy = false;
+                await App.Current.MainPage.DisplayAlert("Error", result?.Message ?? "Credenciales incorrectas", "Intentar de nuevo");
+            }
+        }
+
+        [RelayCommand]
+        private async Task Register()
+        {
+            if (App.Current?.MainPage?.Navigation != null)
+            {
+                await App.Current.MainPage.Navigation.PushAsync(new Views.RegisterScreen());
             }
         }
     }

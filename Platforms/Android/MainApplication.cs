@@ -1,9 +1,13 @@
 ﻿using Android.App;
 using Android.Runtime;
 
+[assembly: UsesPermission(Android.Manifest.Permission.Internet)]
+[assembly: UsesPermission(Android.Manifest.Permission.AccessNetworkState)]
+
 namespace MedicalCenter
 {
-    [Application]
+    [Application(UsesCleartextTraffic = true)]
+
     public class MainApplication : MauiApplication
     {
         public MainApplication(IntPtr handle, JniHandleOwnership ownership)

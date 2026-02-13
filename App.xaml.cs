@@ -12,7 +12,9 @@ namespace MedicalCenter
 
         protected override Window CreateWindow(IActivationState? activationState)
         {
-            return new Window(new LoginScreen());
+            var navigationPage = new NavigationPage(new MedicalCenter.Views.LoginScreen());
+
+            return new Window(navigationPage);
         }
     }
 }

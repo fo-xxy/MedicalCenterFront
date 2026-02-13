@@ -78,7 +78,7 @@
                 <Label Text="¿No tienes cuenta?" TextColor="#6B7280" FontSize="14"/>
                 <Label Text="Registrate" TextColor="#4F46E5" FontAttributes="Bold" FontSize="14">
                     <Label.GestureRecognizers>
-                        <TapGestureRecognizer Command="{Binding GoToRegisterCommand}"/>
+                        <TapGestureRecognizer Command="{Binding RegisterCommand}"/>
                     </Label.GestureRecognizers>
                 </Label>
             </HorizontalStackLayout>

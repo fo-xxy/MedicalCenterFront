@@ -4,8 +4,9 @@ public partial class LoginScreen : ContentPage
 {
 	public LoginScreen()
 	{
-		InitializeComponent();
+        InitializeComponent();
+        BindingContext = new ViewModels.LoginViewModel();
 
-        BindingContext = new MedicalCenter.ViewModels.LoginViewModel();
+        NavigationPage.SetHasNavigationBar(this, false);
     }
 }
