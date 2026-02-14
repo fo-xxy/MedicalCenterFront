@@ -39,6 +39,7 @@ namespace MedicalCenter.Services.Claims
 
         public async Task<bool> ImportClaimsAsync(string filePath)
         {
+
             try
             {
                 await AddAuthorizationHeader();
