@@ -27,5 +27,8 @@ namespace MedicalCenter.Models
 
         [JsonPropertyName("service_date")]
         public DateTime ServiceDate { get; set; }
+
+        [JsonPropertyName("idImport")]
+        public int? IdImport { get; set; }
     }
 }

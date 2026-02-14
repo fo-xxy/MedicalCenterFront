@@ -48,7 +48,10 @@ namespace MedicalCenter.ViewModels
                 await SecureStorage.SetAsync("auth_token", result.Token);
 
 
-                await Shell.Current.GoToAsync("//ClaimsPage");
+                MainThread.BeginInvokeOnMainThread(() =>
+                {
+                    Application.Current.MainPage = new AppShell();
+                });
             }
             else
             {

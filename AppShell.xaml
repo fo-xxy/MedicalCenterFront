@@ -4,42 +4,22 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="clr-namespace:MedicalCenter"
     xmlns:claims="clr-namespace:MedicalCenter.Views.Claims"
-    Title="Medical Center">
+    Title="Medical Center"
+    FlyoutBehavior="Disabled">
 
-    <Shell.Resources>
-        <ResourceDictionary>
-            <Style TargetType="TabBar">
-                <Setter Property="Shell.TabBarBackgroundColor" Value="White" />
-                <Setter Property="Shell.TabBarTitleColor" Value="#3B82F6" />
-                <Setter Property="Shell.TabBarUnselectedColor" Value="#9CA3AF" />
-            </Style>
-        </ResourceDictionary>
-    </Shell.Resources>
-
-    <ShellContent
-        Title="Login"
-        ContentTemplate="{DataTemplate local:Views.LoginScreen}"
-        Route="Login"
-        Shell.TabBarIsVisible="False" />
-
-    <TabBar>
-        <Tab Title="Claims" Icon="list_icon.png">
-            <ShellContent 
-                ContentTemplate="{DataTemplate claims:ClaimScreen}" 
-                Route="ClaimsPage" />
+    <TabBar Route="MainTabs" Shell.FlyoutItemIsVisible="False">
+        <Tab Title="Claims" Icon="iconoclaim.png">
+            <ShellContent ContentTemplate="{DataTemplate claims:ClaimScreen}" Route="ClaimsPage" />
         </Tab>
 
-        <Tab Title="Importar" Icon="upload_icon.png">
-            <ShellContent 
-                ContentTemplate="{DataTemplate claims:ClaimImportScreen}" 
-                Route="ImportPage" />
+        <Tab Title="Importar" Icon="iconoexport.png">
+            <ShellContent ContentTemplate="{DataTemplate claims:ClaimImportScreen}" Route="ImportPage" />
         </Tab>
 
-        <Tab Title="Importar" Icon="upload_icon.png">
-            <ShellContent 
-                ContentTemplate="{DataTemplate claims:ClaimExportScreen}" 
-                Route="ImportPage" />
+        <Tab Title="Exportar" Icon="iconoimport.png">
+            <ShellContent ContentTemplate="{DataTemplate claims:ClaimExportScreen}" Route="ExportPage" />
         </Tab>
+
     </TabBar>
 
 </Shell>

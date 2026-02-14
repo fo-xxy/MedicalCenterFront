@@ -9,15 +9,20 @@ namespace MedicalCenter
         public App()
         {
             InitializeComponent();
+
+            SecureStorage.Default.Remove("auth_token");
+
+            
+            MainPage = new NavigationPage(new MedicalCenter.Views.LoginScreen());
         }
 
-        protected override Window CreateWindow(IActivationState? activationState)
+        /*protected override Window CreateWindow(IActivationState? activationState)
         {
-            var token = Task.Run(async () => await SecureStorage.Default.GetAsync("auth_token")).Result;
+            //var token = Task.Run(async () => await SecureStorage.Default.GetAsync("auth_token")).Result;
 
             var shell = new AppShell();
 
-            if (!string.IsNullOrEmpty(token))
+            /*if (!string.IsNullOrEmpty(token))
             {
        
                 Task.Run(async () => await shell.GoToAsync("//ClaimsPage"));
@@ -28,6 +33,6 @@ namespace MedicalCenter
             }
 
             return new Window(shell); 
-        }
+        }*/
     }
 }

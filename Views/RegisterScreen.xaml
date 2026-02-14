@@ -11,7 +11,7 @@
                      Spacing="0" 
                      Padding="45,40,45,0" 
                      VerticalOptions="Start">
-            <BoxView HeightRequest="20" Color="Transparent" />
+            
 
             <Label Text="Centro Medico" 
                    FontSize="22" 
@@ -32,7 +32,7 @@
                 <VerticalStackLayout Spacing="4">
                     <Label Text="Correo" FontSize="12" FontAttributes="Bold" TextColor="#374151" />
                     <Frame Padding="15,2" HasShadow="False" BackgroundColor="#F9FAFB" BorderColor="#E5E7EB" CornerRadius="8">
-                        <Entry Placeholder="tu@correo.com" Text="{Binding Email}" HeightRequest="45"/>
+                        <Entry Placeholder="Ingresa tu correo" Text="{Binding Email}" HeightRequest="45"/>
                     </Frame>
                 </VerticalStackLayout>
 
@@ -46,7 +46,18 @@
                 <VerticalStackLayout Spacing="4">
                     <Label Text="Rol" FontSize="12" FontAttributes="Bold" TextColor="#374151" />
                     <Frame Padding="15,2" HasShadow="False" BackgroundColor="#F9FAFB" BorderColor="#E5E7EB" CornerRadius="8">
-                        <Entry Placeholder="Ej. Administrador" Text="{Binding Role}" HeightRequest="45"/>
+                        <Picker x:Name="RolePicker"
+                Title="Selecciona un rol"
+                SelectedItem="{Binding Role}"
+                HeightRequest="45"
+                TextColor="#111827">
+                            <Picker.ItemsSource>
+                                <x:Array Type="{x:Type x:String}">
+                                    <x:String>admin</x:String>
+                                    <x:String>staff</x:String>
+                                </x:Array>
+                            </Picker.ItemsSource>
+                        </Picker>
                     </Frame>
                 </VerticalStackLayout>
 

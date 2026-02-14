@@ -103,5 +103,31 @@ namespace MedicalCenter.Services.Claims
             }
             return null;
         }
+
+        public async Task<List<ClaimImport>> GetClaimsHistoryAsync()
+        {
+            try
+            {
+                await AddAuthorizationHeader();
+
+                var response = await _httpClient.GetAsync($"{BaseUrl}Claims/HistoryImport");
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var content = await response.Content.ReadAsStringAsync();
+
+                    var result = JsonSerializer.Deserialize<ApiResponse<List<ClaimImport>>>(content,
+                        new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+
+                    return result?.Data ?? new List<ClaimImport>();
+                }
+                return new List<ClaimImport>();
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Error: {ex.Message}");
+                return new List<ClaimImport>();
+            }
+        }
     }
 }

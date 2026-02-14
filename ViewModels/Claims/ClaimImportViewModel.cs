@@ -1,8 +1,10 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using MedicalCenter.Models;
 using MedicalCenter.Services.Claims;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Text;
 
 
@@ -23,28 +25,54 @@ namespace MedicalCenter.ViewModels.Claims
         public bool IsNotBusy => !IsBusy;
         public bool CanImport => !string.IsNullOrEmpty(FilePath) && !IsBusy;
 
+        [ObservableProperty]
+        private ObservableCollection<ClaimImport> _importHistory = new();
+
         public ClaimImportViewModel()
         {
+            _ = LoadHistoryAsync();
         }
         [RelayCommand]
         private async Task PickFile()
         {
             try
             {
+                var csvFileType = new FilePickerFileType(
+                    new Dictionary<DevicePlatform, IEnumerable<string>>
+                    {
+                { DevicePlatform.Android, new[] { "text/csv", "text/comma-separated-values" } },
+                { DevicePlatform.iOS, new[] { "public.comma-separated-values-text" } },
+                { DevicePlatform.WinUI, new[] { ".csv" } }
+                    });
+
                 var result = await FilePicker.Default.PickAsync(new PickOptions
                 {
-                    PickerTitle = "Seleccione un archivo"
+                    PickerTitle = "Seleccione el archivo de Claims (Formato CSV)",
+                    FileTypes = csvFileType
                 });
 
                 if (result != null)
                 {
-                    FileName = result.FileName;
-                    FilePath = result.FullPath;
+                    var extension = Path.GetExtension(result.FileName).ToLower();
+
+                    if (extension == ".csv")
+                    {
+                        FileName = result.FileName;
+                        FilePath = result.FullPath;
+                    }
+                    else
+                    {
+                        await Shell.Current.DisplayAlert("Archivo inválido",
+                            "El sistema requiere un archivo CSV.", "OK");
+
+                        FileName = string.Empty;
+                        FilePath = string.Empty;
+                    }
                 }
             }
             catch (Exception ex)
             {
-                await Shell.Current.DisplayAlert("Error", ex.Message, "OK");
+                await Shell.Current.DisplayAlert("Error", "No se pudo acceder al archivo: " + ex.Message, "OK");
             }
         }
 
@@ -89,6 +117,28 @@ namespace MedicalCenter.ViewModels.Claims
         private async Task Help()
         {
             await Shell.Current.DisplayAlert("Ayuda", "El archivo debe tener las columnas: Paciente, Monto y Fecha.", "Entendido");
+        }
+
+
+        [RelayCommand]
+        public async Task LoadHistoryAsync()
+        {
+            try
+            {
+                var claimsService = new ClaimsService();
+
+                var history = await claimsService.GetClaimsHistoryAsync();
+
+                ImportHistory.Clear();
+                foreach (var item in history)
+                {
+                    ImportHistory.Add(item);
+                }
+            }
+            catch (Exception ex)
+            {
+                await Shell.Current.DisplayAlert("Error", "No se pudo cargar el historial", "OK");
+            }
         }
     }
 }

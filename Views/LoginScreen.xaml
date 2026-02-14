@@ -5,7 +5,7 @@
              BackgroundColor="White"
              Shell.NavBarIsVisible="False">
 
-    <Grid RowDefinitions="*, 80">
+    <Grid RowDefinitions="*, Auto">
 
         <ScrollView Grid.Row="0">
             <VerticalStackLayout Spacing="0" Padding="45,80,45,0">
